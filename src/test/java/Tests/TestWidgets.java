@@ -31,8 +31,15 @@ public class TestWidgets extends BaseTest {
     public void inputColors() throws InterruptedException {
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         widgets.enterColors("blue");
+        Assert.assertEquals("Blue", driver.findElement(By.cssSelector(".css-1rhbuit-multiValue.auto-complete__multi-value")).getText());
+        widgets.removeColor.click();
         widgets.enterColors("red");
+        Assert.assertEquals("Red", driver.findElement(By.cssSelector(".css-1rhbuit-multiValue.auto-complete__multi-value")).getText());
+        widgets.removeColor.click();
         widgets.enterColors("yellow");
+        Assert.assertEquals("Yellow", driver.findElement(By.cssSelector(".css-1rhbuit-multiValue.auto-complete__multi-value")).getText());
+        widgets.removeColor.click();
+        Assert.assertTrue(driver.findElement(By.cssSelector(".auto-complete__input>input")).getText().isEmpty());
     }
     @Test void inputSingleColor() throws InterruptedException {
 

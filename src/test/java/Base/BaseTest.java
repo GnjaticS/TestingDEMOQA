@@ -20,6 +20,8 @@ public class BaseTest {
     public Widgets widgets;
     public TextBox textBox;
     public ExcelReader excelReader;
+    public BookStore bookStore;
+    public LoginPageBookStore loginPageBookStore;
     @BeforeClass
     public void setUp() throws IOException {
         WebDriverManager.chromedriver().setup();
@@ -31,6 +33,9 @@ public class BaseTest {
         widgets = new Widgets();
         textBox = new TextBox();
         excelReader = new ExcelReader("/Users/stefang/Desktop/TextBox.xlsx");
+        bookStore = new BookStore();
+        loginPageBookStore = new LoginPageBookStore();
+
 
     }
 }

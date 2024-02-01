@@ -34,6 +34,8 @@ public class Widgets extends BaseTest {
     public WebElement singleColor;
     @FindBy(id = "autoCompleteMultiple")
     public List<WebElement> multipleColors;
+    @FindBy(css = ".css-xb97g8.auto-complete__multi-value__remove")
+    public WebElement removeColor;
 
     public void clicksToEnterMultipleColors(){
         for(var color: multipleColors){
