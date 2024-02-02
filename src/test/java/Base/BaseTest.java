@@ -41,7 +41,7 @@ public class BaseTest {
 
     @AfterClass
     public void finalTearDown(){
-        driver.manage().deleteAllCookies();
-        driver.quit();
+        //driver.manage().deleteAllCookies();
+        //driver.quit();
     }
 }

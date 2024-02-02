@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -12,16 +13,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 
 public class TestBrokenLinksImages extends BaseTest {
 
 
     @BeforeMethod
     public void pageSetUp() throws InterruptedException {
+
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("var newTab = window.open(); newTab.location.href = 'https://demoqa.com/';");
+        ArrayList<String> listaTabova = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(listaTabova.get(listaTabova.size() - 1));
         driver.get("https://demoqa.com/");
-        ((JavascriptExecutor) driver).executeScript("document.querySelector('#fixedban').remove()");
+        js.executeScript("document.querySelector('#fixedban').remove()");
         homePage.clickOnElements();
         sidebarElements.scrollDown();
         Thread.sleep(2000);
@@ -29,7 +36,6 @@ public class TestBrokenLinksImages extends BaseTest {
     }
     @Test(priority = 20)
     public void brokenImage() throws InterruptedException {
-
         brokenLinks.scrollDown();
         // Verify that the image is not displayed using the naturalWidth as an attribute
         Assert.assertEquals(brokenLinks.image.getAttribute("naturalWidth"), "0");
@@ -53,6 +59,13 @@ public class TestBrokenLinksImages extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("row")).isDisplayed());
 
         //Assert.assertEquals(brokenLinks.findMessage(), "Status Codes"); - maybe delete it
+    }
+    @AfterMethod
+    public void TearDownTabs(){
+        driver.navigate().refresh();
+        driver.navigate().to("https://demoqa.com/");
+        // Verify that the user is taken back to the homepage
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/");
     }
 
 }

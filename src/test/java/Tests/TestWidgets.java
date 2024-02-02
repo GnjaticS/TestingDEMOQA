@@ -5,18 +5,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 public class TestWidgets extends BaseTest {
     @BeforeMethod
     public void pageSetUp() throws InterruptedException {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("var newTab = window.open(); newTab.location.href = 'https://demoqa.com/';");
+        ArrayList<String> listaTabova = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(listaTabova.get(listaTabova.size() - 1));
         driver.get("https://demoqa.com/");
-        ((JavascriptExecutor) driver).executeScript("document.querySelector('#fixedban').remove()");
+        js.executeScript("document.querySelector('#fixedban').remove()");
         sidebarElements.scrollDown();
 
         widgets.clickWidgets();
@@ -48,6 +54,11 @@ public class TestWidgets extends BaseTest {
         //Verify that the color name is input in the field
         Assert.assertEquals(driver.findElement(By.cssSelector(".auto-complete__single-value.css-1uccc91-singleValue")).getText(), "Purple");
     }
-
-
+    @AfterMethod
+    public void TearDownTabs(){
+        driver.navigate().refresh();
+        driver.navigate().to("https://demoqa.com/");
+        // Verify that the user is taken back to the homepage
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/");
+    }
 }
