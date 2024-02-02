@@ -1,7 +1,9 @@
 package Tests;
 
 import Base.BaseTest;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -25,6 +27,12 @@ public class TestBookApp extends BaseTest {
         loginPageBookStore.addCookie3();
         loginPageBookStore.addCookie4();
         driver.navigate().refresh();
+        //Verify that the user is logged in
+        //locate the logout button (make sure that it's present)
+        Assert.assertTrue(driver.findElement(By.cssSelector(".btn.btn-primary")).isDisplayed());
+        // check the logged in URL
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/login");
+
 
     }
 }
