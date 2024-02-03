@@ -3,6 +3,7 @@ package Tests;
 import Base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -72,6 +73,33 @@ public class TestTextBox extends BaseTest {
         Assert.assertEquals(textBox.currentAddress.getText(), "");
 
 
+    }
+    @Test
+    public void invalidPasswordProblem(){
+        String fullName = excelReader.getStringData("Sheet1", 1, 0);
+        String email = excelReader.getStringData("Sheet1", 1, 1);
+        String currentAddress = excelReader.getStringData("Sheet1", 1, 2);
+        String permanentAddress = excelReader.getStringData("Sheet1", 1, 3);
+
+        textBox.enterUserName(fullName);
+        textBox.enterEmail("stefan.gnjatic.yahoo.com");
+        textBox.enterCurrentAddress(currentAddress);
+        textBox.enterPermanentAddress(permanentAddress);
+        sidebarElements.scrollDown();
+        textBox.clickToSubmit();
+        //Verify that the email input field throws an error message
+        WebElement inputEmail = driver.findElement(By.id("userEmail"));
+        String classAttributeValue = inputEmail.getAttribute("class");
+        Assert.assertTrue(classAttributeValue.contains("field-error"));
+
+        boolean submitFieldIsDisplayed = false;
+        try {
+            driver.findElement(By.id("name"));
+            Assert.assertTrue(submitFieldIsDisplayed);
+        } catch(NoSuchElementException e){
+        }
+
+        Assert.assertFalse(submitFieldIsDisplayed);
     }
     @AfterMethod
     public void TearDownTabs(){
