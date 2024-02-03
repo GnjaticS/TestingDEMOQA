@@ -1,6 +1,9 @@
 package Tests;
 
 import Base.BaseTest;
+import Pages.BrokenLinks;
+import Pages.HomePage;
+import Pages.UploadDownload;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -8,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -18,19 +22,22 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 public class TestUploadDownload extends BaseTest {
+    public static HomePage homePage;
+    public static UploadDownload uploadDownload;
+
+    @BeforeClass
+    public static void setPages() {
+        homePage = new HomePage();
+        uploadDownload = new UploadDownload();
+    }
+
     @BeforeMethod
     public void pageSetUp() throws InterruptedException {
-        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("var newTab = window.open(); newTab.location.href = 'https://demoqa.com/';");
-        ArrayList<String> listaTabova = new ArrayList<>(driver.getWindowHandles());
-        driver.switchTo().window(listaTabova.get(listaTabova.size() - 1));
-        driver.get("https://demoqa.com/");
-        js.executeScript("document.querySelector('#fixedban').remove()");
+        SwitchToNewTab();
         homePage.clickOnElements();
-        sidebarElements.scrollDown();
-        sidebarElements.clickOnUploadAndDownload();
+        homePage.scrollDown();
+        homePage.clickOnUploadAndDownload();
     }
     @Test
     public void Download() throws InterruptedException {
@@ -64,10 +71,8 @@ public class TestUploadDownload extends BaseTest {
     }
     @AfterMethod
     public void TearDownTabs(){
-        driver.navigate().refresh();
-        driver.navigate().to("https://demoqa.com/");
-        // Verify that the user is taken back to the homepage
-        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/");
+        driver.close();
+        SwitchToFirstTab();
     }
 }
 

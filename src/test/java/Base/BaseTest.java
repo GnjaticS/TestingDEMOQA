@@ -1,47 +1,47 @@
 package Base;
 
-import Pages.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
-import java.io.IOException;
-import java.time.Duration;
-
 public class BaseTest {
     public static WebDriver driver;
     public static WebDriverWait wait;
-    public HomePage homePage;
-    public SidebarElements sidebarElements;
-    public BrokenLinks brokenLinks;
-    public UploadDownload uploadDownload;
-    public Widgets widgets;
-    public TextBox textBox;
-    public ExcelReader excelReader;
-    public BookStore bookStore;
-    public LoginPageBookStore loginPageBookStore;
+
     @BeforeClass
-    public void setUp() throws IOException {
+    public static void setUp() {
+        System.out.println("Setup driver");
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        homePage = new HomePage();
-        sidebarElements = new SidebarElements();
-        brokenLinks = new BrokenLinks();
-        uploadDownload = new UploadDownload();
-        widgets = new Widgets();
-        textBox = new TextBox();
-        excelReader = new ExcelReader("/Users/stefang/Desktop/TextBox.xlsx");
-        bookStore = new BookStore();
-        loginPageBookStore = new LoginPageBookStore();
-
+        driver.manage().window().maximize();
     }
 
     @AfterClass
-    public void finalTearDown(){
-        //driver.manage().deleteAllCookies();
-        //driver.quit();
+    public static void finalTearDown() {}
+
+    public void SwitchToNewTab() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("var newTab = window.open();");
+        driver.switchTo().window(driver.getWindowHandles()
+                .stream()
+                .reduce((first, second) -> second)
+                .orElse(null)
+        );
+        driver.get("https://demoqa.com/");
+        js.executeScript("document.querySelector('#fixedban').remove()");
+
+    }
+
+    public void SwitchToFirstTab() {
+        driver.switchTo().window(
+                driver.getWindowHandles()
+                        .stream()
+                        .reduce((first, second) -> first)
+                        .orElse(null)
+        );
     }
 }

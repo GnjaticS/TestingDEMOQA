@@ -18,10 +18,7 @@ import java.util.List;
 
 import static org.openqa.selenium.Keys.ENTER;
 
-public class Widgets extends BaseTest {
-    public Widgets(){
-        PageFactory.initElements(driver, this);
-    }
+public class Widgets extends BasePage{
     @FindBy(xpath = "/html/body/div/div/div/div[2]/div/div[4]/div/div[3]")
     public WebElement widgets;
     @FindBy(css = ".btn.btn-light")
@@ -46,8 +43,8 @@ public class Widgets extends BaseTest {
     }
     public void enterColors(String color){
 
-        wait.until(ExpectedConditions.elementToBeClickable
-                (driver.findElement(By.id("autoCompleteMultipleContainer"))));
+        BaseTest.wait.until(ExpectedConditions.elementToBeClickable
+                (BaseTest.driver.findElement(By.id("autoCompleteMultipleContainer"))));
         enterColor.click();
         enterColor.sendKeys(color);
         enterColor.sendKeys(ENTER);

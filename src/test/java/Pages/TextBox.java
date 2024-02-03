@@ -5,11 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class TextBox extends BaseTest {
-    public TextBox(){
-        PageFactory.initElements(driver, this);
-    }
-
+public class TextBox extends BasePage {
     @FindBy(id = "userName")
     public WebElement userName;
     @FindBy(id = "userEmail")
@@ -42,6 +38,7 @@ public class TextBox extends BaseTest {
         permanentAddress.sendKeys(permAddress);
     }
     public void clickToSubmit(){
+        scrollIntoView("#submit");
         submit.click();
     }
 }

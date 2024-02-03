@@ -1,23 +1,29 @@
 package Pages;
-
-import Base.BaseTest;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
-public class SidebarElements extends BaseTest {
-    public SidebarElements(){
+import static Base.BaseTest.driver;
+
+public class BasePage {
+    public BasePage() {
+        // System.out.println(driver);
         PageFactory.initElements(driver, this);
     }
     public void scrollDown(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 200);");
+        js.executeScript("window.scrollBy(0, 400);");
     }
+
+    public void scrollIntoView(String cssSelector) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        System.out.println(String.format("document.querySelector('%s').scrollIntoViewIfNeeded()", cssSelector));
+        js.executeScript(String.format("document.querySelector('%s').scrollIntoViewIfNeeded()", cssSelector));
+    }
+
     @FindBy(css = ".btn.btn-light")
     public List<WebElement> brokenImage;
 
@@ -28,7 +34,7 @@ public class SidebarElements extends BaseTest {
     @FindBy(className = "mgbox")
     public WebElement popUp;
 
-    public void clcikOnBrokenImage(){
+    public void clickOnBrokenImage(){
         for (int i=0; i<brokenImage.size(); i++){
             if (brokenImage.get(i).getText().equalsIgnoreCase("broken links - images")){
                 brokenImage.get(i).click();
@@ -49,10 +55,5 @@ public class SidebarElements extends BaseTest {
             }
         }
     }
-
-
-
-
-
 
 }

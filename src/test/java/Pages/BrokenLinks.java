@@ -8,15 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
-public class BrokenLinks extends BaseTest {
-    public BrokenLinks(){
-        PageFactory.initElements(driver, this);
-    }
-
-    public void scrollDown(){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0, 300);");
-    }
+public class BrokenLinks extends BasePage {
     @FindBy(css = "img[src='/images/Toolsqa_1.jpg']")
     public WebElement image;
 
