@@ -5,7 +5,6 @@ import Base.ExcelReader;
 import Pages.HomePage;
 import Pages.TextBox;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -16,14 +15,11 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 
 public class TestTextBox extends BaseTest {
     public static HomePage homePage;
     public static TextBox textBox;
     public static ExcelReader excelReader;
-
-    boolean last_failed;
 
     @BeforeClass
     public static void setPages() throws IOException {
@@ -41,7 +37,6 @@ public class TestTextBox extends BaseTest {
         homePage.scrollDown();
         Thread.sleep(2000);
         homePage.clickOnTextBox();
-        last_failed = true;
     }
     @Test
     public void completeTexBox() throws InterruptedException {
@@ -67,7 +62,6 @@ public class TestTextBox extends BaseTest {
         WebElement permAddress = output.findElement(By.id("permanentAddress"));
         Assert.assertEquals(permAddress.getText(), "Permananet Address :"+permanentAddress);
 
-        last_failed = false;
     }
     @Test
     public void refreshAfterSubmitting(){
@@ -88,7 +82,6 @@ public class TestTextBox extends BaseTest {
         Assert.assertEquals(textBox.email.getText(), "");
         Assert.assertEquals(textBox.currentAddress.getText(), "");
 
-        last_failed = false;
     }
     @Test
     public void invalidPasswordProblem(){
@@ -116,10 +109,9 @@ public class TestTextBox extends BaseTest {
         }
 
         Assert.assertFalse(submitFieldIsDisplayed);
-        last_failed = false;
     }
     @Test
-    public void UsercanModifyCredentialsAfterSubmitting(){
+    public void UserCanModifyCredentialsAfterSubmitting(){
         String fullName = excelReader.getStringData("Sheet1", 1, 0);
         String email = excelReader.getStringData("Sheet1", 1, 1);
         String currentAddress = excelReader.getStringData("Sheet1", 1, 2);
@@ -144,14 +136,11 @@ public class TestTextBox extends BaseTest {
         // Verify that the name has changed in the submit box
         WebElement checkEmail = driver.findElement(By.id("email"));
         Assert.assertEquals(checkEmail.getText(), "Email:sgnjatic@gmail.com");
-        last_failed = false;
     }
 
     @AfterMethod
     public void TearDownTabs(){
-        if (!last_failed) {
-            driver.close();
-            SwitchToFirstTab();
-        }
+        driver.close();
+        SwitchToFirstTab();
     }
 }

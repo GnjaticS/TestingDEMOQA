@@ -4,6 +4,7 @@ import Base.BaseTest;
 import Pages.BookStore;
 import Pages.HomePage;
 import Pages.LoginPageBookStore;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
@@ -69,9 +70,51 @@ public class TestBookApp extends BaseTest {
         // Verify the matching username
         Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books");
     }
+    @Test(priority = 15)
+    public void AddABookToCollection() throws InterruptedException {
+        bookStore.clickOnLogin();
+        bookStore.enterUsername("golmanbranić");
+        bookStore.enterPassword("Aa12345678@");
+        bookStore.clickOnLogin();
+        bookStore.clickOnBook1();
+        bookStore.scrollDown();
+        bookStore.clickToAddBook();
+        Thread.sleep(1000);
+        // Verify that the book is added to the collection
+        Alert alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText(), "Book added to your collection.");
+        try {
+            alert = driver.switchTo().alert();
+            alert.accept();
+        } catch (Exception e){
+
+        }
+
+    }
+    @Test
+    public void AddedBookIsInTheCollection() throws InterruptedException {
+        bookStore.clickOnLogin();
+        bookStore.enterUsername("golmanbranić");
+        bookStore.enterPassword("Aa12345678@");
+        bookStore.clickOnLogin();
+        bookStore.clickOnBook1();
+        bookStore.scrollDown();
+        bookStore.clickToAddBook();
+        Thread.sleep(1000);
+        // Verify that the same book is already added to the collection
+        Alert alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText(), "Book already present in the your collection!");
+        try {
+            alert = driver.switchTo().alert();
+            alert.accept();
+        } catch (Exception e){
+
+        }
+    }
+
     @AfterMethod
     public void TearDownTabs(){
-        // driver.close();
-        SwitchToFirstTab();
+        //driver.close();
+        //SwitchToFirstTab();
     }
 }
