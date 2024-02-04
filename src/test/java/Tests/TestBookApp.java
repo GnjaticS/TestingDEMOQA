@@ -6,7 +6,6 @@ import Pages.HomePage;
 import Pages.LoginPageBookStore;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -14,7 +13,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.ArrayList;
 
 public class TestBookApp extends BaseTest {
     public static HomePage homePage;
@@ -37,8 +35,8 @@ public class TestBookApp extends BaseTest {
         homePage.scrollDown();
         homePage.clickOnBookApp();
     }
-    @Test(priority = 20)
-    public void BookAppLogin(){
+    @Test(priority = 25)
+    public void BookAppLoginWithCookies(){
         bookStore.clickOnLogin();
         loginPageBookStore.addCookie();
         loginPageBookStore.addCookie2();
@@ -91,7 +89,7 @@ public class TestBookApp extends BaseTest {
         }
 
     }
-    @Test
+    @Test(priority = 20)
     public void AddedBookIsInTheCollection() throws InterruptedException {
         bookStore.clickOnLogin();
         bookStore.enterUsername("golmanbranić");
@@ -111,9 +109,43 @@ public class TestBookApp extends BaseTest {
 
         }
     }
+    @Test(priority = 5)
+    public void DeleteAllBooksFromTheCollection() throws InterruptedException {
+        bookStore.clickOnLogin();
+        bookStore.enterUsername("golmanbranić");
+        bookStore.enterPassword("Aa12345678@");
+        bookStore.clickOnLogin();
+        Thread.sleep(2000);
+        bookStore.scrollDown();
+        bookStore.clickOnProfile();
+        bookStore.scrollDown();
+        bookStore.clickToDeleteBooks();
+        bookStore.clickToConfirmDelete();
+        // Verify that all book are deleted
+        Alert alert = driver.switchTo().alert();
+
+        String alertText = alert.getText();
+        boolean isEqual = false;
+        if (alertText.equalsIgnoreCase("No books available in your's collection!")
+                || alertText.equalsIgnoreCase("All Books deleted.")){
+            Assert.assertFalse(isEqual);
+        } else {
+            Assert.assertTrue(isEqual);
+        }
+
+
+        try {
+            alert = driver.switchTo().alert();
+            alert.accept();
+        } catch (Exception e){
+
+        }
+
+    }
 
     @AfterMethod
     public void TearDownTabs(){
+        driver.manage().deleteAllCookies();
         //driver.close();
         //SwitchToFirstTab();
     }

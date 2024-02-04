@@ -24,6 +24,12 @@ public class BookStore extends BasePage {
     public WebElement userName;
     @FindBy(id = "password")
     public WebElement password;
+    @FindBy(xpath = "/html/body/div/div/div/div[2]/div[1]/div/div/div[6]/div/ul/li[3]/span")
+    public WebElement profile;
+    @FindBy(css = ".text-right.button.di")
+    public WebElement deleteBooks;
+    @FindBy(id = "closeSmallModal-ok")
+    public WebElement confirmDelete;
 
     public void clickOnLogin(){
         scrollIntoView("#login");
@@ -52,6 +58,16 @@ public class BookStore extends BasePage {
         password.click();
         password.sendKeys(pass);
     }
+    public void clickOnProfile(){
+        profile.click();
+    }
+    public void clickToDeleteBooks(){
+        deleteBooks.click();
+    }
+    public void clickToConfirmDelete(){
+        confirmDelete.click();
+    }
+
 
 
 
