@@ -21,7 +21,10 @@ public class BaseTest {
     }
 
     @AfterClass
-    public static void finalTearDown() {}
+    public static void finalTearDown() {
+        driver.manage().deleteAllCookies();
+        driver.quit();
+    }
 
     public void SwitchToNewTab() {
         JavascriptExecutor js = (JavascriptExecutor) driver;

@@ -57,7 +57,6 @@ public class TestBookApp extends BaseTest {
         loginPageBookStore.addCookie3();
         loginPageBookStore.addCookie4();
         driver.navigate().refresh();
-        driver.navigate().refresh();
         driver.navigate().back();
         Thread.sleep(2000);
         driver.manage().deleteAllCookies();
@@ -122,6 +121,7 @@ public class TestBookApp extends BaseTest {
         bookStore.clickToDeleteBooks();
         bookStore.clickToConfirmDelete();
         // Verify that all book are deleted
+        Thread.sleep(2000);
         Alert alert = driver.switchTo().alert();
 
         String alertText = alert.getText();
@@ -132,7 +132,6 @@ public class TestBookApp extends BaseTest {
         } else {
             Assert.assertTrue(isEqual);
         }
-
 
         try {
             alert = driver.switchTo().alert();
@@ -146,7 +145,7 @@ public class TestBookApp extends BaseTest {
     @AfterMethod
     public void TearDownTabs(){
         driver.manage().deleteAllCookies();
-        //driver.close();
-        //SwitchToFirstTab();
+        driver.close();
+        SwitchToFirstTab();
     }
 }

@@ -5,6 +5,8 @@ import Pages.BrokenLinks;
 import Pages.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -62,6 +64,12 @@ public class TestBrokenLinksImages extends BaseTest {
         Assert.assertTrue(driver.findElement(By.className("row")).isDisplayed());
 
         //Assert.assertEquals(brokenLinks.findMessage(), "Status Codes"); - maybe delete it
+    }
+    @Test
+    public void validImage() throws InterruptedException {
+        Thread.sleep(2000);
+        WebElement parent = driver.findElement(By.tagName("img"));
+        Assert.assertTrue(parent.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/div[2]/img[1]")).isDisplayed());
     }
 
     @AfterMethod

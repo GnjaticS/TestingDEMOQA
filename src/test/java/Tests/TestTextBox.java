@@ -84,7 +84,7 @@ public class TestTextBox extends BaseTest {
 
     }
     @Test
-    public void invalidPasswordProblem(){
+    public void invalidEmailProblem(){
         String fullName = excelReader.getStringData("Sheet1", 1, 0);
         String email = excelReader.getStringData("Sheet1", 1, 1);
         String currentAddress = excelReader.getStringData("Sheet1", 1, 2);

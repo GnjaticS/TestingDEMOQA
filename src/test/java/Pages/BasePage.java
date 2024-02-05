@@ -20,7 +20,6 @@ public class BasePage {
 
     public void scrollIntoView(String cssSelector) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        System.out.println(String.format("document.querySelector('%s').scrollIntoViewIfNeeded()", cssSelector));
         js.executeScript(String.format("document.querySelector('%s').scrollIntoViewIfNeeded()", cssSelector));
     }
 
